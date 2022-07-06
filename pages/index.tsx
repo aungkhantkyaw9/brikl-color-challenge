@@ -28,12 +28,12 @@ const Home: NextPage = () => {
       .get("/api/generate-color-swatch", {
         params: {
           type: "brgb",
-          max_range: 100,
+          max_range: 10000,
           byte_range: 3,
         },
       })
       .then((response) => {
-        setColorSwatches([...response.data.color]);
+        setColorSwatches([...response.data.data]);
         setErrorMessage("");
       })
       .catch((error) => {

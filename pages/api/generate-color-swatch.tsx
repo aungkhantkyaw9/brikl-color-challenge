@@ -6,11 +6,13 @@ type ColorFormat = {
 };
 
 type Error = {
+  status: number,
   error_message: string;
 };
 
-type GeneratedColor = {
-  color: Array<ColorFormat>;
+type Response = {
+  status: number,
+  data: Array<ColorFormat>;
 };
 
 type QueryData = {
@@ -19,11 +21,16 @@ type QueryData = {
   byte_range?: number;
 };
 
+/**
+ * Random Color Generate API handler
+ * @param req NextApiRequest
+ * @param res Either generated color array or error
+ */
 export default function generateRandomColor(
   req: NextApiRequest,
-  res: NextApiResponse<GeneratedColor | Error>
+  res: NextApiResponse<Response | Error>
 ) {
-  const defaultColorFormat = ["rgb", "hsl"];
+  const defaultColorFormat: Array<string> = ["rgb", "hsl"];
   let result: Array<number>;
   let colorSwatch: Array<ColorFormat> = [];
 
@@ -32,22 +39,27 @@ export default function generateRandomColor(
   if (queryData.type) {
     if (queryData.type === "") {
       res.status(400).json({
+        status: 400,
         error_message: "Please provide valid color type",
       });
     } else if (!queryData.max_range || isNaN(queryData.max_range)) {
       res.status(400).json({
+        status: 400,
         error_message: "Max range is required for custom color space",
       });
     } else if (queryData.max_range < 1) {
       res.status(400).json({
+        status: 400,
         error_message: "Max range value must be greater than 0",
       });
     } else if (!queryData.byte_range || isNaN(queryData.byte_range)) {
       res.status(400).json({
+        status: 400,
         error_message: "Byte range is required for custom color space",
       });
     } else if (queryData.byte_range < 3) {
       res.status(400).json({
+        status: 400,
         error_message: "Byte range must be at least 3 bytes",
       });
     } else {
@@ -64,7 +76,8 @@ export default function generateRandomColor(
       }
 
       res.status(200).json({
-        color: colorSwatch,
+        status: 200,
+        data: colorSwatch,
       });
     }
   } else {
@@ -80,7 +93,8 @@ export default function generateRandomColor(
     }
 
     res.status(200).json({
-      color: colorSwatch,
+      status: 200,
+      data: colorSwatch,
     });
   }
 }
@@ -117,6 +131,11 @@ function customRandomColorGenerator(max: number, byteRange: number) {
   return colorCode;
 }
 
+/**
+ * Random number generator
+ * @param max upper bound for random number
+ * @returns generated number
+ */
 function randomInteger(max: number) {
-  return Math.floor(Math.random() * (max + 1));
+  return Math.floor(Math.random() * (++max));
 }

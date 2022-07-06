@@ -1,34 +1,171 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Brikl Color Challenge
 
-## Getting Started
+## Pre-requisites
 
-First, run the development server:
+  - Node.js version 10.13 or later
+  - Implemented using Next.JS and Typescript and Styled Component
+
+<br/>
+
+## Project Setup
+
+Clone repository from `https://github.com/aungkhantkyaw9/brikl-color-challenge.git`
+
+Then `cd` to project directory and switch the branch you want to run
+
+
+After finished, open the project and run following:
 
 ```bash
-npm run dev
-# or
-yarn dev
+> npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<br/>
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+When finished, start the server using `npm run dev` <br/><br/>
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Go to `http://localhost:3000` in your browser. 
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+<br/>
 
-## Learn More
+Random 5 color swatches with different color space (mix RGB and HSL as default) will generate and show when form load. Clicking on `Generate` button will regenerate 5 random color swatches with different color space (mix RGB and HSL as default).
 
-To learn more about Next.js, take a look at the following resources:
+<br/>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+URI
+```Javascript
+http://localhost:3000/api/generate-color-swatch
+```
 
-## Deploy on Vercel
+Method
+```Javascript
+GET
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Payload
+-   `type`: (string) Name of custom color representation
+-   `max_range`: (number) Must be greater than 0
+-   `byte_range`: (number) Used to define total bytes representation (Eg. rgb(10,39,23) or rgba(49, 199, 54, 32) )
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<br><br>
+
+Example Payload
+```Javascript
+{
+    type: brgb,
+    max_range: 10000,
+    byte_range: 3
+}
+```
+
+<br><Br>
+
+Response
+-   `status`: (integer) HTTP Status Code
+-   `error_message`: (string) Error message for error reponse
+-   `data`: (array) Formatted JSON array
+-   `type`: (string) Custom color representation name
+-   `color_code`: (array) Generated color code. Default 3 bytes or custom bytes length base on user request
+
+
+Example Response (Default)
+```Javascript
+{
+    "status": 200,
+    "data": [
+        {
+            "type": "rgb",
+            "color_code": [
+                199,
+                41,
+                220
+            ]
+        },
+        {
+            "type": "rgb",
+            "color_code": [
+                182,
+                96,
+                44
+            ]
+        },
+        {
+            "type": "hsl",
+            "color_code": [
+                140,
+                2,
+                32
+            ]
+        },
+        {
+            "type": "hsl",
+            "color_code": [
+                222,
+                32,
+                60
+            ]
+        },
+        {
+            "type": "hsl",
+            "color_code": [
+                30,
+                56,
+                12
+            ]
+        }
+    ]
+}
+```
+
+<br>
+
+Example Response (w/Custom Payload)
+```Javascript
+{
+    "status": 400,
+    "data": [
+        {
+            "type": "brgb",
+            "color_code": [
+                1435,
+                5282,
+                9379
+            ]
+        },
+        {
+            "type": "brgb",
+            "color_code": [
+                6538,
+                1552,
+                9071
+            ]
+        },
+        {
+            "type": "brgb",
+            "color_code": [
+                5410,
+                4253,
+                58
+            ]
+        },
+        {
+            "type": "brgb",
+            "color_code": [
+                5731,
+                3885,
+                5958
+            ]
+        },
+        {
+            "type": "brgb",
+            "color_code": [
+                884,
+                7056,
+                5851
+            ]
+        }
+    ]
+}
+```
