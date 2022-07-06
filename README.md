@@ -47,7 +47,7 @@ GET
 Payload
 -   `type`: (string) Name of custom color representation
 -   `max_range`: (number) Must be greater than 0
--   `byte_range`: (number) Used to define total bytes representation (Eg. rgb(10,39,23) or rgba(49, 199, 54, 32) )
+-   `byte_range`: (number) Used to define total bytes representation (Eg. rgb(10,39,23) or argb(49, 199, 54, 32) )
 
 <br><br>
 
